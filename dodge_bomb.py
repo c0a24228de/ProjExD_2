@@ -33,6 +33,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]: #初期値:画面の中
 def gameover(screen: pg.Surface) -> None:
     """
     引数：black_surface
+    透明度：128
     """
     black_surface = pg.Surface((WIDTH, HEIGHT))
     black_surface.set_alpha(128)
@@ -46,6 +47,18 @@ def gameover(screen: pg.Surface) -> None:
     screen.blit(img8, (230, 310))
     screen.blit(img8, (820, 310))
     pg.display.update()
+
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    sbb_accs = [a for a in range(1, 11)]
+    sbb_imgs = []
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_img.set_colorkey((0, 0, 0))
+        sbb_imgs.append(bb_img)
+
+
+    return sbb_accs, sbb_imgs
 
 
 def main():
@@ -97,7 +110,11 @@ def main():
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1]) #移動をなかったことにする
         screen.blit(kk_img, kk_rct)
-        bb_rct.move_ip(vx, vy) #爆弾の移動
+        
+        sbb_accs,sbb_imgs=init_bb_imgs()
+        avx = vx*sbb_accs[min(tmr//500, 9)]
+        bb_img = sbb_imgs[min(tmr//500, 9)]
+        bb_rct.move_ip(avx, vy) #爆弾の移動
         yoko, tate = check_bound(bb_rct)
         if not yoko: #横にはみ出ていたら
             vx *= -1
