@@ -60,6 +60,23 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
 
     return sbb_accs, sbb_imgs
 
+def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface:
+    global kk_imgs_dict
+    if not kk_imgs_dict:
+        base_kk_img = pg.image.load("fig/3.png") 
+        base_kk_img = pg.transform.rotozoom(base_kk_img, 0, 0.9)
+        kk_imgs_dict[(0, 0)] = base_kk_img
+        kk_imgs_dict[(5, 0)] = base_kk_img
+        kk_imgs_dict[(5, 5)] = pg.transform.rotozoom(base_kk_img, -45, 1.0)
+        kk_imgs_dict[(0, 5)] = pg.transform.rotozoom(base_kk_img, -90, 1.0) 
+        kk_imgs_dict[(-5, 5)] = pg.transform.rotozoom(base_kk_img, -135, 1.0) 
+        kk_imgs_dict[(-5, 0)] = pg.transform.flip(base_kk_img, True, False)
+        kk_imgs_dict[(-5, -5)] = pg.transform.rotozoom(kk_imgs_dict[(-5, 0)], 45, 1.0)
+        kk_imgs_dict[(0, -5)] = pg.transform.rotozoom(base_kk_img, 90, 1.0) 
+        kk_imgs_dict[(5, -5)] = pg.transform.rotozoom(base_kk_img, 45, 1.0) 
+        return kk_imgs_dict.get(sum_mv, kk_imgs_dict[(0, 0)])
+
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
