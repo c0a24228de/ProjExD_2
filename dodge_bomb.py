@@ -49,6 +49,11 @@ def gameover(screen: pg.Surface) -> None:
     pg.display.update()
 
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    """
+    sbb_accs:爆弾の大きさ
+    sbb_imgs:爆弾の速さ
+    range:繰り返し
+    """
     sbb_accs = [a for a in range(1, 11)]
     sbb_imgs = []
     for r in range(1, 11):
